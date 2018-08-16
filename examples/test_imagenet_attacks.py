@@ -32,11 +32,7 @@ from cleverhans.model import Model
 
 
 SETUP_INSTRUCTIONS = """
-$ cd cleverhans/examples/nips17_adversarial_competition/dataset
-$ mkdir images
-$ python download_images.py --input_file=dev_dataset.csv --output_dir=images
-$ cd ../dev_toolkit/sample_attacks
-$ ./download_checkpoints.sh
+$ ./examples/nips17_adversarial_competition/dev_toolkit/download_data.sh
 """
 
 DEFAULT_INCEPTION_PATH = os.path.join(CLEVERHANS_ROOT,
@@ -82,7 +78,7 @@ def load_images(input_dir, metadata_file_path, batch_shape):
         row = rows[idx]
         filepath = os.path.join(input_dir, row[row_idx_image_id] + '.png')
 
-        with tf.gfile.Open(filepath) as f:
+        with tf.gfile.Open(filepath, 'rb') as f:
             image = np.array(
                 Image.open(f).convert('RGB')).astype(np.float) / 255.0
         images[idx, :, :, :] = image
