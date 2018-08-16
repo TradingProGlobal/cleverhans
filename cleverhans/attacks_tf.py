@@ -1842,6 +1842,12 @@ def pgd_attack(loss_fn,
     assertions.append(tf.assert_greater_equal(input_image, 0.0,
                          message="Input image must have a minimum of 0.0"))
 
+    if is_debug:
+        with tf.device("/cpu:0"):
+            input_image = tf.Print(
+                input_image, [],
+                "Starting PGD attack with epsilon: %s" % epsilon)
+
     init_perturbation = tf.random_uniform(
         tf.shape(input_image), minval=-epsilon, maxval=epsilon, dtype=tf_dtype)
     init_perturbation = project_perturbation(init_perturbation, epsilon,
